@@ -1,8 +1,8 @@
-# 🤖 Using Speckit with AI Coding Agents
+# 🤖 Using Speckit 2.0 with AI Coding Agents
 
-This guide shows you how to go from idea to implementation with less frustration.
+This guide shows you how to go from idea to sophisticated implementation with AI assistance.
 
-## The Problem You're Solving
+## The Problem Speckit Solves
 
 When working with AI coding agents, you've probably experienced:
 
@@ -11,8 +11,9 @@ When working with AI coding agents, you've probably experienced:
 3. **Wrong tech choices** - AI picks a stack you're not comfortable with
 4. **Missing context** - AI asks the same questions repeatedly
 5. **Lost progress** - Starting over because AI went down wrong path
+6. **Incomplete implementations** - Features half-done or missing edge cases
 
-**Speckit solves this** by creating a single source of truth for your project.
+**Speckit solves this** by creating a comprehensive, structured spec that serves as a contract between you and the AI.
 
 ---
 
@@ -21,69 +22,84 @@ When working with AI coding agents, you've probably experienced:
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │  Your Idea  │ ──► │   Speckit   │ ──► │   SPEC.md   │ ──► │  AI Agent   │
-│             │     │  (refine)   │     │  (contract) │     │ (implement) │
+│             │     │ (3 phases)  │     │  (contract) │     │ (implement) │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+                           │
+                    ┌──────┴──────┐
+                    ▼      ▼      ▼
+                  Plan  Design  Implement
 ```
 
 ---
 
-## Step 1: Capture Your Idea
+## Step 1: Create Your Spec
 
-### Quick Start (30 seconds)
+### Full Spec (10-15 minutes) - Recommended
 ```bash
 cd ~/my-project
-python ~/speckit/speckit.py quick "A CLI tool that tracks my daily tasks"
+python -m speckit.cli new
 ```
 
-This generates a starter `SPEC.md` that you can refine.
+This walks you through all three phases:
+1. **Planning**: Capture requirements, scope, risks
+2. **Design**: Architecture, components, APIs
+3. **Implementation**: Phases, testing, deployment
 
-### Full Spec (5-10 minutes)
+### Quick Spec (30 seconds)
 ```bash
-python ~/speckit/speckit.py new
+python -m speckit.cli quick "A CLI tool that tracks my daily tasks"
 ```
 
-Answer the guided questions to create a comprehensive spec.
+### With Template
+```bash
+python -m speckit.cli new --template api
+```
 
 ---
 
 ## Step 2: Review Your Spec
 
-Open `SPEC.md` and check:
+Before handing to AI, verify:
 
-- [ ] **Overview** - Does the problem/solution match your vision?
-- [ ] **Features** - Are must-haves truly essential? 
-- [ ] **Non-goals** - Did you exclude enough to keep scope tight?
-- [ ] **Tech stack** - Are you comfortable with these choices?
-- [ ] **Phases** - Is Phase 1 small enough to validate quickly?
+### Planning Section
+- [ ] **Problem/Solution** - Does it match your vision?
+- [ ] **Must-haves** - Are these truly essential for MVP?
+- [ ] **Won't-haves** - Did you exclude enough?
+- [ ] **Risks** - Are major risks identified?
 
-Edit directly if needed. The spec is for YOU, not for ceremony.
+### Design Section
+- [ ] **Architecture** - Is this appropriate for scope?
+- [ ] **Tech stack** - Are you comfortable with these?
+- [ ] **Components** - Are responsibilities clear?
+
+### Implementation Section
+- [ ] **Phases** - Is Phase 1 small enough to validate?
+- [ ] **Success criteria** - Will you know when it's done?
 
 ---
 
 ## Step 3: Start with AI
 
-### Opening Prompt
+### The Opening Prompt
 
 ```
-I have a project I want to build. The full spec is in SPEC.md.
+I have a project I want to build. The full specification is in SPEC.md.
 
 Please:
-1. Read the entire spec carefully
+1. Read the ENTIRE spec carefully (all sections)
 2. Summarize your understanding in 2-3 sentences
 3. List any clarifying questions before we start
 4. Wait for my answers before implementing anything
 
-Don't write any code yet.
+Do not write any code yet.
 ```
-
-This ensures AI understands before building.
 
 ### After AI Asks Questions
 
-Answer the questions, then:
+Answer thoroughly, then:
 
 ```
-Great, let's start with Phase 1 only. 
+Great. Now let's start with Phase 1 ONLY.
 
 Please:
 1. Propose the file structure for Phase 1
@@ -95,44 +111,122 @@ Please:
 
 ```
 That approach looks good. Please implement Phase 1.
-
 After each file, pause and let me review before continuing.
 ```
 
 ---
 
-## Step 4: Iterate Safely
+## Step 4: During Implementation
 
-### If AI Goes Off Track
+### Keep AI Focused
 
-```
-Stop. This isn't matching the spec.
-
-Look at the Non-Goals section - we explicitly said no {feature}.
-
-Let's reset. Re-read SPEC.md and tell me what Phase 1 actually requires.
-```
-
-### If You Want to Change Direction
+When AI goes off-track:
 
 ```
-I want to modify the spec. Let's update these sections:
-
-1. Change {X} to {Y}
-2. Add {Z} to must-haves
-3. Remove {W} from scope
-
-Please update your understanding and we'll continue.
+Stop. Look at the spec.
+The Non-Goals section explicitly says no [feature].
+Let's stay focused on Phase 1 requirements only.
 ```
+
+### Reference the Spec Constantly
+
+```
+How does that fit with the spec? Check:
+- Is it in the Must-Have features?
+- Does it match the defined architecture?
+- Is it within the current phase scope?
+```
+
+### Complete One Phase at a Time
+
+```
+Let's verify Phase 1 is complete before moving on.
+
+From SPEC.md, Phase 1 success criteria:
+- [ ] [criterion 1]
+- [ ] [criterion 2]
+
+Please confirm each is done.
+```
+
+---
+
+## Step 5: Phase Transitions
 
 ### Completing a Phase
 
 ```
-Phase 1 is complete. Let's verify against success criteria:
+Phase 1 looks complete. Before Phase 2:
+1. Let me test the current implementation
+2. I'll report any issues
+3. Then we'll review Phase 2 requirements
 
-[Paste the success criteria from SPEC.md]
+[Test it]
 
-Please confirm each item is done, or tell me what's missing.
+Found these issues: [list issues]
+Let's fix these before moving on.
+```
+
+### Starting Next Phase
+
+```
+Phase 1 is working. Let's commit:
+
+git add .
+git commit -m "Phase 1 complete: [summary]"
+
+Now, let's review Phase 2 from SPEC.md.
+```
+
+---
+
+## Common Prompts
+
+### "AI keeps adding unwanted features"
+
+```
+Stop. You're adding [feature] which is NOT in the spec.
+Check the Won't Have section. Remove this.
+```
+
+### "AI's code is too complex"
+
+```
+This is overengineered. The Constraints section says:
+> "Keep it simple and readable"
+Simplify to the minimum that meets Phase 1.
+```
+
+### "Need to change requirements"
+
+```
+I want to modify the spec. Updates:
+1. Move [X] from Must-Have to Could-Have
+2. Add [Y] to Won't-Have
+
+Please acknowledge and update your understanding.
+```
+
+### "Starting a new session"
+
+```
+I'm continuing work on [project].
+
+Context:
+- Spec: SPEC.md
+- Last session: Completed [X, Y, Z]
+- Current phase: Phase [N]
+
+Please confirm and continue.
+```
+
+### "Wrapping up"
+
+```
+Let's wrap up. Please provide:
+1. Summary of what we completed
+2. Current state (working/not working)
+3. Next steps for next session
 ```
 
 ---
@@ -140,118 +234,30 @@ Please confirm each item is done, or tell me what's missing.
 ## Pro Tips
 
 ### 1. Keep Phases Small
-A phase should be completable in 1-2 hours. If it feels bigger, break it down.
-
-```
-Phase 1 feels too big. Let's split it:
-- Phase 1a: Just the data model and database
-- Phase 1b: Basic CRUD API
-- Phase 1c: Simple frontend form
-
-Let's start with 1a only.
-```
+Each phase should be completable in 1-2 hours.
 
 ### 2. Use Non-Goals Aggressively
-Every time AI adds something you didn't ask for:
-
-```
-That's a non-goal. Add it to the Non-Goals section and remove it.
-```
+Every time AI adds something you didn't ask for, point to Non-Goals.
 
 ### 3. Validate Early
-After Phase 1, actually use the thing:
+After Phase 1, actually use the thing before Phase 2.
 
-```
-Before Phase 2, I'm going to test Phase 1 manually.
+### 4. Save Working States
+Commit after each successful phase.
 
-[Test it]
-
-Found some issues:
-1. X doesn't work when Y
-2. Z is confusing
-
-Let's fix these before moving on.
-```
-
-### 4. Reference the Spec Constantly
-When AI proposes something:
-
-```
-How does that fit with the spec? Specifically check:
-- Does it match the user flow?
-- Is it within scope?
-- Does it use the agreed tech stack?
-```
-
-### 5. Save Working States
-After each successful phase:
-
-```
-Phase 1 is working. Let's commit this state before Phase 2.
-
-git add .
-git commit -m "Phase 1 complete: basic functionality working"
-```
-
----
-
-## Common Prompts
-
-### "Start a new project"
-```
-Read SPEC.md and implement Phase 1. Start with file structure, 
-then implement each file. Pause after each major component.
-```
-
-### "Continue from where we left off"
-```
-We're working on [project]. The spec is in SPEC.md, currently on Phase 2.
-
-Last session we completed: [X, Y, Z]
-Next up: [remaining tasks from Phase 2]
-
-Continue from there.
-```
-
-### "Something's broken"
-```
-There's an issue: [describe problem]
-
-Relevant part of spec: [paste section]
-
-Please fix while keeping alignment with the spec.
-```
-
-### "Add a new feature"
-```
-I want to add a feature that wasn't in the original spec.
-
-New feature: [describe]
-
-Please:
-1. Suggest where this fits in the spec (P0, P1, or future?)
-2. Identify any conflicts with existing requirements
-3. Recommend if we should do this now or after MVP
-```
-
-### "Wrap up for the day"
-```
-Let's wrap up. Please provide:
-1. Summary of what we completed
-2. Current state (what's working, what's not)
-3. Clear next steps for next session
-4. Any decisions I need to make before we continue
-```
+### 5. The Spec is Your Anchor
+Always reference it. Update it when requirements change.
 
 ---
 
 ## Example Session
 
 ```
-You: I want to build a bookmark manager. Let me run speckit first.
+You: I want to build a bookmark manager. Let me create a spec first.
 
-[Run: python ~/speckit/speckit.py new]
-[Answer questions, SPEC.md created]
+[Run: python -m speckit.cli new]
+[Answer questions through all three phases]
+[SPEC.md generated]
 
 You: Here's my project spec in SPEC.md. Please read it and 
      summarize your understanding.
@@ -262,67 +268,21 @@ AI: I understand you want a CLI bookmark manager that...
     2. What format for export?
 
 You: 1. No sync, local only. 2. JSON export is fine.
-     Add those to the spec. Now implement Phase 1.
+     Now implement Phase 1.
 
 AI: [Creates file structure]
     [Implements bookmark data model]
     [Creates add/list commands]
     
-    Phase 1 complete. Would you like to test it?
+    Phase 1 complete.
 
-You: Yes. Let me try it.
+You: Let me test it.
      
 [Test: bookmark add "GitHub" https://github.com]
 [Test: bookmark list]
 
-You: Works! The output is hard to read though. Can you 
-     add some formatting before we move to Phase 2?
-
-AI: [Improves output formatting]
-
-You: Perfect. Commit this as "Phase 1 complete" and 
-     let's start Phase 2 tomorrow.
-```
-
----
-
-## Troubleshooting
-
-### "AI keeps ignoring parts of my spec"
-Re-paste the relevant section directly:
-
-```
-You're missing this requirement from the spec:
-
-> "Must work offline - no external API calls"
-
-Please fix your implementation to match.
-```
-
-### "AI's code is too complex"
-```
-This is overengineered for v1. Remember the constraints:
-- Single file preferred
-- Keep it simple
-
-Simplify to the minimum that meets the spec.
-```
-
-### "I'm stuck on what to spec"
-Start with the quick command and refine:
-
-```bash
-python ~/speckit/speckit.py quick "my idea in one sentence"
-```
-
-Then edit SPEC.md to add detail.
-
-### "AI keeps asking things I already answered"
-Point to the spec:
-
-```
-That's already in SPEC.md under [section]. 
-Please reference the spec instead of asking again.
+You: Works! Commit as "Phase 1 complete" and 
+     we'll start Phase 2 tomorrow.
 ```
 
 ---
@@ -330,9 +290,11 @@ Please reference the spec instead of asking again.
 ## Remember
 
 1. **The spec is your anchor** - Always reference it
-2. **Small phases = fast progress** - Validate early and often
-3. **Non-goals are powerful** - Use them to prevent scope creep
+2. **Small phases = fast progress** - Validate early
+3. **Non-goals are powerful** - Prevent scope creep
 4. **You're the product manager** - AI implements, you decide
 5. **It's okay to update the spec** - Requirements evolve
 
 Happy building! 🚀
+
+*Speckit 2.0*
